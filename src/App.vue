@@ -30,7 +30,34 @@ header {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid;
+  padding: 0;
 }
+
+
+.botonnv a {
+    display: flex;
+    text-decoration: none;
+    color: var(--color-text);
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+ }
+
+ .botonnv {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  height: 100%;
+  padding: 0;
+}
+
+.botonnv:hover {
+  background-color: var(--color-border-hover);
+}
+
 
 
 .material-symbols-outlined {

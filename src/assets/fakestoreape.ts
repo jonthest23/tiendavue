@@ -5,7 +5,7 @@ export class FakeStoreApe {
 
      fakestoreapi = axios.create({
         baseURL: 'https://fakestoreapi.com/',
-        timeout: 1000,
+        timeout: 2000,
       
       })
 
@@ -13,6 +13,7 @@ export class FakeStoreApe {
         await this.fakestoreapi.post('products', articulo)
         .then(respuesta => {
           alert("se agrego el articulo " + respuesta.data.title + " satisfactoriamente =)")
+            console.log(respuesta.data)
         })
         .catch(error => {
           console.log(error.toJSON())
@@ -36,6 +37,7 @@ export class FakeStoreApe {
         return await this.fakestoreapi.get('products')
         .then(respuesta => {
             return respuesta.data
+
         })
         .catch(error => {
             throw error
@@ -79,12 +81,12 @@ export class FakeStoreApe {
     editarArticulo = async (articulo:Articulo) => {
         await this.fakestoreapi.put('products/' + articulo.id, articulo)
         .then(respuesta => {
-            alert("se edito el articulo " + respuesta.data.title + " satisfactoriamente =)") 
+            alert("se edito el articulo " + respuesta.data.id + " satisfactoriamente =) bajo el nombre de " + respuesta.data.title) 
         })
         .catch(error => {
-            console.log(error.toJSON())
+            throw error
         });
-        
+    
         
     };
 

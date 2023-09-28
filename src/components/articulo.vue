@@ -28,7 +28,7 @@ function editarArticulo () {
                 delete
             </span>
         </button>
-        <button>
+        <button @click="editarArticulo()">
             <span class="material-symbols-outlined">
                 edit
             </span>

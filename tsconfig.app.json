@@ -3,9 +3,6 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue","src/**/*.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "types": [
-      "jest"
-    ],
     "composite": true,
     "lib": [ "ES2015", "DOM" ],
     "baseUrl": ".",
