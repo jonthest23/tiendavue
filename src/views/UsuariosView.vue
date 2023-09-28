@@ -32,7 +32,7 @@ const obtenerUsuarios = async () => {
   try {
     const respuesta = await axios.get('https://fakestoreapi.com/users')
     Usuarios.value = respuesta.data
-  } catch (error) {
+  } catch (error:any) {
     console.error(error.toJSON())
     errorServicio.value = true
   }

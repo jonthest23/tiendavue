@@ -40,7 +40,7 @@ header {
     'GRAD' 0,
     'opsz' 24;
   font-size: 2rem;
-  color: white;
+  color: var(--color-text);
 }
 
 #carrito {

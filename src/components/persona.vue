@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import type { Usuario } from './interface/interface';
+
 const props = defineProps<{
-    persona: {
-        type: any,
-        required: true
-    }
+    persona: Usuario
 }>()
 </script>
 <template>

@@ -1,59 +1,27 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import articulo from '@/components/articulo.vue';
-
-
-
-interface carrito {
-    id: number,
-    userId: number,
-    date: string,
-    products: [
-        productId: number,
-        quantity: number
-    ]
-}
-
-interface Usuario {
-    id: number,
-    email: string,
-    username: string,
-    password: string,
-    name: {
-        firstname: string,
-        lastname: string
-    },
-    adress: {
-        street: string,
-        number: number,
-        city: string,
-        zipcode: number,
-        geolocation: {
-            lat: number,
-            long: number
-        }
-    },
-    phone: string,
-}
+import type { Articulo } from '@/components/interface/interface';
+import type { carrito } from '@/components/interface/interface';
+import type { Usuario } from '@/components/interface/interface';
+import { FakeStoreApe } from '@/assets/fakestoreape';
 
 const karrito = ref<carrito>()
 const errorServicio = ref<Boolean>(false)
 const usuario = ref<Usuario>()
-const articulos = ref<Array<articulo>>([])
-
+const articulos = ref<Array<Articulo>>([])
+const conexion = new FakeStoreApe()
 const obtenerDatos = async () => {
     obtenerCarrito()
     
 };
 
-const obtenerArticulos = async (productId) => {
+const obtenerArticulos = async (productId: number) => {
     try {
-        const URL =  'https://fakestoreapi.com/products/' + productId
-        const respuesta = await axios.get(URL)
-        articulos.value.push(respuesta.data)
+        const respuesta = await conexion.obtenerArticulo(productId)
+        articulos.value.push(respuesta)
         console.log(articulos.value)
-    } catch (error) {
+    } catch (error:any) {
         console.error(error.toJSON())
         errorServicio.value = true
     }
@@ -63,26 +31,37 @@ const obtenerArticulos = async (productId) => {
 
 const obtenerCarrito = async () => {
     try {
-        const respuesta = await axios.get('https://fakestoreapi.com/carts/5')
-        karrito.value = respuesta.data
+        const respuesta = await conexion.obtenerCarrito(5)
+        karrito.value = respuesta
         console.log(karrito.value)
-    } catch (error) {
+    } catch (error:any) {
         console.error(error.toJSON())
         errorServicio.value = true
     }
-    try {
-        const URL =  'https://fakestoreapi.com/users/' + karrito.value.userId
-        const respuesta = await axios.get(URL)
-        usuario.value = respuesta.data
+    if (karrito.value) {
+        try {
+            const respuesta = await conexion.obtenerUsuario(karrito.value.userId)
+            usuario.value = respuesta
+            console.log(usuario.value)
+        } catch (error) {
+            console.error(error)
+            errorServicio.value = true
+        }
         console.log(usuario.value)
-    } catch (error) {
-        console.error(error)
-        errorServicio.value = true
+        for (let item of karrito.value.products) {
+            obtenerArticulos(item.productId)
+        }
+
     }
-    for(let item of karrito.value.products){
-        obtenerArticulos(item.productId)
-    }
+
+    
+
+
 };
+
+
+
+
 onMounted(obtenerDatos)
 </script>
 
@@ -95,7 +74,7 @@ onMounted(obtenerDatos)
                     Carrito de {{ usuario?.name.firstname }}
                 </h1>
                 <ul>
-                    <articulo v-for="articulo of articulos" :key="articulo.id" :articulo="articulo" />
+                    <articulo v-for="articulo of articulos" :key="articulo.id" :articulo="articulo" :eliminarArticulo="conexion.eliminarArticulo" :editarArticulo="conexion.editarArticulo"/>
                 </ul>
 
             </div>

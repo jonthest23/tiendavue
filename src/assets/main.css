@@ -23,37 +23,7 @@ body {
 .botonnv:hover {
   background-color: var(--color-border-hover);
 }
- .Articulo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 300px;
-  margin: 20px;
-  padding: 1rem;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  list-style: none;
 
-}
-.Articulo div {
-  width: 100%;
-  height: 200px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  text-align: center;
-  background-color: white;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-.Articulo div img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-
-}
 .subtitulo_boton{
   display: flex;
   justify-content: space-between;

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { allowedNodeEnvironmentFlags } from 'process';
+
 import { ref , onMounted } from 'vue'
+import type { Articulo } from './interface/interface';
 
 const props = defineProps<{
     togglePopup: Function,
     enviarArticulo: Function,
-    Articulo: {
-        type: any
-        required: true
-    }
+    Articulo: Articulo
 }>()
 function validacion () {
     if (props.Articulo.title == undefined || props.Articulo.price == undefined || props.Articulo.image == undefined || props.Articulo.category == undefined || props.Articulo.description == undefined) {

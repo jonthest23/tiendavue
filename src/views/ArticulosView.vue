@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { ref , onMounted } from 'vue'
 import articulo from '@/components/articulo.vue';
 import Popup from '@/components/Popup.vue';
+import type { Articulo } from '@/components/interface/interface';
+import {FakeStoreApe} from '../assets/fakestoreape'
 
+const conexion = new FakeStoreApe()
 
-const articulos = ref<Array<articulo>>([])
+const articulos = ref<Array<Articulo>>([])
 const errorServicio = ref<Boolean>(false)
   interface articulo {
     id: number,
@@ -16,14 +18,26 @@ const errorServicio = ref<Boolean>(false)
     description: string
 }
 
-const Articulo = ref<articulo>({})
+const Articulo = ref<articulo>({
+    id: 0,
+    title: "",
+    price: 0,
+    image: "",
+    category: "",
+    description: ""
+})
+
+function enviarArticulo(articulo: articulo) {
+  conexion.enviarArticulo(articulo)
+  togglePopup()
+}
 
 const obtenerArticulos = async () => {
   try {
-    const respuesta = await axios.get('https://fakestoreapi.com/products')
-    articulos.value = respuesta.data
+    const respuesta = await conexion.obtenerArticulos()
+    articulos.value = respuesta
   } catch (error) {
-    console.error(error.toJSON())
+    console.error(error)
     errorServicio.value = true
   }
 };
@@ -31,22 +45,18 @@ const obtenerArticulos = async () => {
 
 
 function togglePopup() {
-  const popup = document.querySelector('.popup')
-  popup.classList.toggle('nonactive')
+  const popup: Element | null = document.querySelector('.popup')
+  if (!(popup == null)) {
+    popup.classList.toggle('nonactive')
+  }
 };
 
-const enviarArticulo = async (articulo:articulo) => {
-  togglePopup()
-  try {
-    const respuesta = await axios.post('https://fakestoreapi.com/products', articulo)
-    console.log(respuesta.data)
-    alert("se agrego el articulo satisfactoriamente =)")
-  } catch (error) {
-    console.error(error.toJSON())
-  }
-  
-};
-onMounted(obtenerArticulos)
+
+onMounted(() => {
+  obtenerArticulos()
+})
+
+
 
 </script>
 
@@ -59,11 +69,11 @@ onMounted(obtenerArticulos)
      </div>
       <p v-if="errorServicio">Error al obtener los articulos</p>
       <ul v-else>
-        <articulo v-for="articulo in articulos" :key="articulo.id" :articulo="articulo" />
+        <articulo v-for="articulo in articulos" :key="articulo.id" :articulo="articulo" :eliminarArticulo="conexion.eliminarArticulo" />
       </ul>
       
     </section>
-    <Popup :Articulo="Articulo" :enviarArticulo="enviarArticulo" :togglePopup="togglePopup" class="nonactive"/>
+    <Popup  :Articulo="Articulo" :enviarArticulo="enviarArticulo" :togglePopup="togglePopup" class="nonactive" v-if="Articulo"/>
   </main>
 
 </template>
