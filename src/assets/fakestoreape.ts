@@ -5,7 +5,7 @@ export class FakeStoreApe {
 
      fakestoreapi = axios.create({
         baseURL: 'https://fakestoreapi.com/',
-        timeout: 2000,
+        timeout: 10000,
       
       })
 
@@ -90,4 +90,16 @@ export class FakeStoreApe {
         
     };
 
+    iniciarSesion = async (username:string, password:string): Promise<string> => {
+        return await this.fakestoreapi.post('auth/login', {
+            username: username,
+            password: password
+        })
+        .then(respuesta => {
+            return respuesta.data
+        })
+        .catch(error => {
+            throw error
+        })
+    }
 }

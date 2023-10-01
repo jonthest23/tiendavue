@@ -12,8 +12,12 @@ const usuario = ref<Usuario>()
 const articulos = ref<Array<Articulo>>([])
 const conexion = new FakeStoreApe()
 const obtenerDatos = async () => {
-    obtenerCarrito()
-    
+    if (sessionStorage.getItem("token") == null) {
+        errorServicio.value = true
+        alert("No se ha iniciado sesion")
+    }else{
+        obtenerCarrito()
+    }
 };
 
 const obtenerArticulos = async (productId: number) => {

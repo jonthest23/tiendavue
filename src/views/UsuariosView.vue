@@ -29,6 +29,10 @@ const Usuarios = ref<Array<Usuario>>([])
 const errorServicio = ref<Boolean>(false)
 
 const obtenerUsuarios = async () => {
+  if(sessionStorage.getItem("token") == null){
+    errorServicio.value = true
+    alert("No se ha iniciado sesion")
+  }else{
   try {
     const respuesta = await axios.get('https://fakestoreapi.com/users')
     Usuarios.value = respuesta.data
@@ -36,6 +40,7 @@ const obtenerUsuarios = async () => {
     console.error(error.toJSON())
     errorServicio.value = true
   }
+}
 };
 
 onMounted(obtenerUsuarios)
@@ -61,4 +66,5 @@ onMounted(obtenerUsuarios)
     justify-content: center;
     align-items: center;
 }
+
 </style>

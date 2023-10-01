@@ -5,6 +5,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/IncioSesion.vue')
+    },
+
+
+    {
       path: '/ArticulosView',
       name: 'articulos',
       // route level code-splitting

@@ -7,7 +7,6 @@ import {FakeStoreApe} from '../assets/fakestoreape'
 
 const conexion = new FakeStoreApe()
 const funcionArticulo = ref<Function>(enviarArticulo)
-
 const articulos = ref<Array<Articulo>>([])
 const errorServicio = ref<Boolean>(false)
   interface articulo {
@@ -34,12 +33,17 @@ function enviarArticulo(articulo: articulo) {
 }
 
 const obtenerArticulos = async () => {
-  try {
-    const respuesta = await conexion.obtenerArticulos()
-    articulos.value = respuesta
-  } catch (error) {
-    console.error(error)
+  if (sessionStorage.getItem("token") == null) {
     errorServicio.value = true
+    alert("No se ha iniciado sesion")
+  } else {
+    try {
+      const respuesta = await conexion.obtenerArticulos()
+      articulos.value = respuesta
+    } catch (error) {
+      console.error(error)
+      errorServicio.value = true
+    }
   }
 };
 const editarArticulo = async (id:number) => {
